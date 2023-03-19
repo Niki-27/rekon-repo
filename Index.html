@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="style.css">
+  <title>Reckon</title>
+  <style>
+    .weather{
+    padding-left: 885px;
+    }
+    table {
+      border-collapse: collapse;
+      margin: 20px auto;
+    }
+    td {
+      padding: 10px;
+      border: 1px solid black;
+    }
+    .head{
+      font-size: 46px;
+    }
+    .t{
+      padding-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="head">Smart Agri Kit</h1>
+  <p class="t">Users Data</p>
+  <div class="main">
+    <div class="bar">
+      <div class="home" id="n">
+        <a href="Index.html">Home</a>
+      </div>
+      <hr>
+      <div class="login" id="n">
+        <a href="login.html">Log In</a>
+      </div>
+      <hr>
+      <div class="about" id="n">
+        <a href="about.html">About Us</a>
+      </div>
+      <hr>
+      <div class="about" id="n">
+        <a href="goverment.html">Goverment Schemes</a>
+      </div>
+      <div class="circle-container">
+        <div class="circle">Temperature</div>
+        <div class="circle">Humidity</div>
+      </div> 
+      <div class="circle-container">
+        <div class="circle">Moisture</div>
+        <div class="circle">PH</div>
+      </div>
+    </div>
+  </div>
+<div class="weather">
+  <h1>Weather</h1>
+  <form id="weather-form">
+    <label for="city">City:</label>
+    <input type="text" id="city" name="city" required>
+    <br>
+    <button type="submit">Get Weather</button>
+  </form>
+  <table>
+    <tr>
+      <td>Temperature</td>
+      <td id="temperature"></td>
+    </tr>
+    <tr>
+      <td>Humidity</td>
+      <td id="humidity"></td>
+    </tr>
+    <tr>
+      <td>Wind Speed</td>
+      <td id="wind-speed"></td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td id="description"></td>
+    </tr>
+  </table>
+  <script>
+    const apiKey = '2beda512096c7e63423ed4f2ee17a0f6';
+    const form = document.getElementById('weather-form');
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const city = document.getElementById('city').value;
+      fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+          // Parse the response data and display it on your website
+          const temperature = Math.round(data.main.temp - 273.15);
+          const humidity = data.main.humidity;
+          const windSpeed = data.wind.speed;
+          const description = data.weather[0].description;
+          document.getElementById('temperature').textContent = `${temperature}°C`;
+          document.getElementById('humidity').textContent = `${humidity}%`;
+          document.getElementById('wind-speed').textContent = `${windSpeed} m/s`;
+          document.getElementById('description').textContent = description;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    });
+  </script>
+</body>
+</html>
